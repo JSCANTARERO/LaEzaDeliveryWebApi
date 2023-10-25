@@ -15,5 +15,11 @@ namespace LaEzaDeliveryWebApi.Controllers
             var lista = await funcion.Mostrarclientes();
             return lista;
         }
+        [HttpPost]
+        public async Task Post([FromBody] Mclientes parametros)
+        {
+            var funcion = new Dclientes();
+            await funcion .InsertarCliente(parametros);
+        }
     }
 }

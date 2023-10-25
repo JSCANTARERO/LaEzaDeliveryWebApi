@@ -1,6 +1,7 @@
 ﻿using LaEzaDeliveryWebApi.Conexion;
 using LaEzaDeliveryWebApi.Controllers.Modelo;
 using LaEzaDeliveryWebApi.Datos;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace LaEzaDeliveryWebApi.Datos
@@ -35,6 +36,25 @@ namespace LaEzaDeliveryWebApi.Datos
                 }
             }
             return lista;
+        }
+        //Insertar un cliente
+        public async Task InsertarCliente(Mclientes parametros)
+        {
+            using (var sql = new SqlConnection(cn.cadenaSQL()))
+            {
+                using (var cmd = new SqlCommand("INSERT INTO CLIENTES(nombreCliente, direccionCliente, correoCliente, telefonoCliente) " +
+                    "VALUES (@nombreCliente, @direccionCliente, @correoCliente, @telefonoCliente)", sql))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@nombreCliente", parametros.nombreCliente);
+                    cmd.Parameters.AddWithValue("@direccionCliente", parametros.direccionCliente);
+                    cmd.Parameters.AddWithValue("@correoCliente", parametros.correoCliente);
+                    cmd.Parameters.AddWithValue("@telefonoCliente", parametros.telefonoCliente);
+
+                    await sql.OpenAsync();
+                    await cmd.ExecuteReaderAsync();
+                }
+            }
         }
     }
 }
